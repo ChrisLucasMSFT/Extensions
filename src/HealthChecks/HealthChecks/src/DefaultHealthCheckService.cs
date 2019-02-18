@@ -104,7 +104,7 @@ namespace Microsoft.Extensions.Diagnostics.HealthChecks
                         checkCancellationToken = timeoutCancellationTokenSource.Token;
                     }
 
-                    result = await healthCheck.CheckHealthAsync(context, checkCancellationToken);
+                    result = await healthCheck.CheckHealthAsync(context, checkCancellationToken).ConfigureAwait(false);
 
                     var duration = stopwatch.GetElapsedTime();
 
@@ -118,7 +118,6 @@ namespace Microsoft.Extensions.Diagnostics.HealthChecks
                     Log.HealthCheckEnd(_logger, registration, entry, duration);
                     Log.HealthCheckData(_logger, registration, entry);
                 }
-
                 catch (OperationCanceledException ex) when (!cancellationToken.IsCancellationRequested)
                 {
                     var duration = stopwatch.GetElapsedTime();
